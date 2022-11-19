@@ -1,0 +1,42 @@
+ALPHABETS -> A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+DIGIT -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+OP -> + | - | * | ** | / | %
+
+//struktur kasar function
+FUNCTION -> FUNCTION_HEADER CBO MAIN CBC
+FUNCTION_HEADER -> FUNCTIONTERM TITLEFUNC
+TITLEFUNC -> VAR BO FUNCVAR BC | VAR BO BC
+FUNCVAR -> FUNCFAR KOMA FUNCFAR | VAR
+
+
+BO -> (
+BC -> )
+CBO -> {
+CBC -> }
+KOMA -> ,
+FUNCTIONTERM -> function
+
+//MAIN tuh harusnya yang jadi main kita, tapi gatau gimana sih ngebentuk grammarnya gimana
+//struktur kasar return
+RETURN -> RETURNTERM | RETURNTERM VALUES | RETURNTERM 
+VALUES -> VALUES KOMA VALUES | VALUE | VAR
+VALUE -> STRING | NUMBER | BOOLEAN | ARRAY | NULLTERM | TITLEFUNC | UNDEFINEDTERM | BO VALUES BC | VALUES OP VALUES
+
+RETURNTERM -> return
+UNDEFINEDTERM -> undefined
+
+//struktur kasar try
+TRY -> TRYTERM CBO MAIN CBC CATCH | TRYTERM CBO MAIN CBC CATCH FINALLY
+
+//struktur kasar catch
+CATCH -> CATCHTERM BO VAR BO CBO MAIN CBC
+
+//struktur kasar finally
+CATCH -> CATCHTERM CBO MAIN CBC
+
+//struktur kasar throw
+THROW -> THROWTERM THROWABLES
+THROWABLES -> STRING | NUMBER | BOOLEAN | OBJECT
+
+//struktur kasar null? masa gini doang?
+NULLTERM -> null
