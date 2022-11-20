@@ -1,6 +1,11 @@
+Terminals:
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 + - * ** / % < <= > >= == & ^ && | ||
+$ _ . ! ( ) { } \n [ ] , ; : ! /* */ // Nan = function undefined null return const var for true false if else " ' throw try catch finally
+Productions:
+STARTSYMBOL -> MAIN~
 ALPHABETS -> A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z~
 DIGIT -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9~
-OP -> + | - | * | ** | / | % | < | <= | > | >= | == | & | ^ |  && | ORBITWISETERM | ORLOGTERM~
+OP -> + | - | * | ** | / | % | < | <= | > | >= | == | & | ^ | && | ORBITWISETERM | ORLOGTERM~
 OTHERS -> DOLLARSIGN | UNDERSCORE | TITIK | SERUTERM | BO | BC | CBO | CBC | OP~
 DOLLARSIGN -> $~
 UNDERSCORE -> _~
@@ -9,8 +14,8 @@ BO -> (~
 BC -> )~
 CBO -> {~
 CBC -> }~
-RBO -> (~
-RBC -> )~
+RBO -> [~
+RBC -> ]~
 KOMA -> ,~
 TITIK -> .~
 TTKOMA -> ;~
