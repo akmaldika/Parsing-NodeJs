@@ -1,7 +1,5 @@
-
-stateMachine = 1 #Kalo statemachine 0 berarti gak valid
-
-
+import re
+from simplifierFA import *
 
 def readFile(filename):
     #baca file ke string
@@ -10,148 +8,6 @@ def readFile(filename):
     f.close()
 
     return testcase
-
-def removeComments(testcase):
-    #return yang udah dihilangin komennya
-    global stateMachine
-
-    output = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
-        try:
-            gaadaKomen = False
-            index = testcase.index("//")
-            output += testcase[0:index]
-            testcase = testcase[index:]
-            try:
-                index = testcase.index("\n")
-                testcase = testcase[index:]
-            except:
-                adaKomen = False
-        except:
-            if gaadaKomen:
-                output = testcase
-            else:
-                output += testcase
-            adaKomen = False
-
-    output2 = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
-        try:
-            gaadaKomen = False
-            index = output.index("/*")
-            output2 += output[0:index]
-            output = output[index:]
-            try:
-                index = output.index("*/")
-                output = output[index+2:]
-            except:
-                adaKomen = False
-                stateMachine = 0
-                break
-        except:
-            if gaadaKomen:
-                output2 = output
-            else:
-                output2 += output
-            adaKomen = False
-
-    return output2
-
-def removeStrings(testcase):
-    #return semua string diganti jadi string kosong
-    global stateMachine
-
-    output = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
-        try:
-            gaadaKomen = False
-            index = testcase.index("\"")
-            output += testcase[0:index] + " \" "
-            testcase = testcase[index+1:]
-            
-            try:
-                valid = True
-                while valid:
-                    index = testcase.index("\"")
-                    try:
-                        indexEnter = testcase.index("\n")
-                        
-                        if indexEnter < index:
-                            adaKomen = False
-                            stateMachine = 0
-                            break
-                        
-                    except:
-                        pass
-
-                    if testcase[index-1] == "\\":
-                        valid = True
-                        testcase = testcase[index+1:]
-                    else:
-                        valid = False
-
-                testcase = testcase[index+1:]
-                output += " \" "
-            except:
-                adaKomen = False
-                stateMachine = 0
-        except:
-            if gaadaKomen:
-                output = testcase
-            else:
-                output += testcase
-            adaKomen = False
-
-    output2 = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
-        try:
-            gaadaKomen = False
-            index = output.index("'")
-            output2 += output[0:index] + " ' "
-            output = output[index+1:]
-            
-            try:
-                valid = True
-                while valid:
-                    index = output.index("'")
-                    try:
-                        indexEnter = output.index("\n")
-                        
-                        if indexEnter < index:
-                            adaKomen = False
-                            stateMachine = 0
-                            break
-                        
-                    except:
-                        pass
-
-                    if output[index-1] == "\\":
-                        valid = True
-                        output = output[index+1:]
-                    else:
-                        valid = False
-
-                output = output[index+1:]
-                output2 += " ' "
-            except:
-                adaKomen = False
-                stateMachine = 0
-        except:
-            if gaadaKomen:
-                output2 = output
-            else:
-                output2 += output
-            adaKomen = False
-
-    return output2
 
 def transformEnters(testcase):
     #ngubah enter jadi newline biar bisa dibaca sama parser
@@ -166,7 +22,103 @@ def splitOperators(testcase):
         if member != '':
             output.append(member)
 
+    #split buat operator
+    operator = ['!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(',
+                 r'\)',r'\{', r'\}', r'\[', r'\]', '%', '--', '\\.', '\\++',
+                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';']
+
+    for oper in operator:
+        temp = []
+        for statement in output:
+            elmt = re.split(r'[^\w]*(' + oper + r')[^\w]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        output = temp
+        
+    #split buat sama dengan yang satu dipisahin khusus
+    temp = []
+    for statement in output:
+        if '=' in statement and not '==' in statement:
+            elmt = re.split(r'[^\w]*(' + '=' + r')[^\w]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split or yang satu dipisahin khusus
+    temp = []
+    for statement in output:
+        if '|' in statement and not '||' in statement:
+            elmt = re.split(r'[A..z]*(' + '\\|' + r')[A..z]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split and yang satu dipisahin khusus
+    temp = []
+    for statement in output:
+        if '&' in statement and not '&&' in statement:
+            elmt = re.split(r'[A..z]*(' + '\\&' + r')[A..z]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)    
+    output = temp
+
     return output
+
+def simplifyIdNNum(testcase):
+    global stateMachine
+
+    commands = ['=','!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-',
+                 '(', ')', '{', '}', '[', ']', '%', '--', '+', '*', '**',
+                 '\'', '\"', ';',
+                 '.', '++','!', '^', '&', '&&' , '|', '||','function',
+                 'undefined', 'null', 'return','const', 'var', 'let', 'for',
+                 'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
+                 'finally', 'while', 'do', 'in', 'of', 'switch', 'case',
+                 'default', 'break', 'newline']
+
+    output = []
+    for statement in testcase:
+        ###print("\n\nstatement :", statement)
+        if statement in commands:
+            output.append(statement)
+        else:
+            if number(statement):
+                output.append('1')
+            elif identifier(statement):
+                output.append('a')
+            else:
+                stateMachine = 0
+                break
+    return output
+
+
+def tokenize(path):
+    testcase = readFile(path)
+    testcase = removeComments(testcase)
+
+    if stateMachine == 1:
+        testcase = removeStrings(testcase)
+
+        if stateMachine == 1:
+            testcase = transformEnters(testcase)
+            testcase = splitOperators(testcase)
+            testcase = simplifyIdNNum(testcase)
+            
+    if stateMachine != 0:
+        return testcase, True
+    else:
+        return testcase, False
+
 
 if __name__ == "__main__":
     testcase = readFile("test.js")
@@ -175,15 +127,16 @@ if __name__ == "__main__":
     if stateMachine == 1:
         testcase = removeStrings(testcase)
 
-        print("\n\ncheckpoint 1\n")
-        print(testcase)
+        
         if stateMachine == 1:
-            print(testcase)
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
+            testcase = simplifyIdNNum(testcase)
+            print(testcase)
+            
 
     print("\n\ncheckpoint 2\n")
-    print(testcase)
+    
     if stateMachine != 0:
         print("sukses")
     else:

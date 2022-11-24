@@ -1,1 +1,1 @@
-print(testcase)
+    print(CNFdict)

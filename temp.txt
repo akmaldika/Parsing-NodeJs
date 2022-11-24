@@ -9,7 +9,7 @@ OP -> + | - | * | ** | / | % | < | <= | > | >= | == | & | ^ | && | ORBITWISETERM
 OTHERS -> DOLLARSIGN | UNDERSCORE | TITIK | SERUTERM | BO | BC | CBO | CBC | OP~
 DOLLARSIGN -> $~
 UNDERSCORE -> _~
-NEWLINETERM -> \n~
+NEWLINETERM -> newline~
 BO -> (~
 BC -> )~
 CBO -> {~

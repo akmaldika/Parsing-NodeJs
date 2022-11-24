@@ -1,11 +1,11 @@
-x = 50.555
+x=555||21|123&&12&70
 if (x == 0) {
-  return 0; //ini komen
+  return 0 //ini komen
 } else if (x+4==1) {
   if (true) {
-    return 3;
+    return 3
   } else {
-    return 2;
+    return 2
   }
 /*
 Ini multiline komen
@@ -17,7 +17,7 @@ Ini multiline komen
 
 
 } else if (x == 32) {
-  return 'Momin';
+  return 'Momin'
 } else 
   asdasd5 = 8
   const car = {type:"Fiat", model:"500", color:"white"}
