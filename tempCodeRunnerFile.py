@@ -1,1 +1,3 @@
-print(testcase)
+    for statement in testcase:
+        print(statement)
+    print(testcase)
