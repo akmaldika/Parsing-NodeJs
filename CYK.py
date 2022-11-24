@@ -22,8 +22,16 @@ def checkCYK(testCase, CNFdict):
                         if len(production) == 2:
                             if (production[0] in CYKTable[i][start]) and (production[1] in CYKTable[start+1][j]):
                                 CYKTable[i][j].add(rules[0])
-
-    if 'STARTSYMBOL' in CYKTable[0][inputLength-1]:
+    
+    counter = 1
+    for i in CYKTable:
+        print(counter)
+        for j in i:
+            print(j)
+        counter += 1
+    
+    
+    if 'SS' in CYKTable[0][inputLength-1]:
         return True
     else:
         return False

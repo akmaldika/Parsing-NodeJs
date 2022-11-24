@@ -91,6 +91,9 @@ def CFGtoCNF(path):
     terminals, variables, productions = loadCFG(path)
     additionalVar = newVars
 
+    productions = [('SS', ['MAIN'])] + productions
+	
+
     newProd = []
     for production in productions:
         newProd.append(production)
@@ -150,9 +153,10 @@ def CFGtoCNF(path):
                 break
     
     dictionary = prodToDict(productions)
+
     return dictionary
 
 if __name__ == "__main__":
     terminals, variables, productions = loadCFG("temp.txt")
-    f = open("cnftest.txt", "w")
+    f = open("cnftest2.txt", "w")
     f.write(str(CFGtoCNF("temp.txt")).replace(')', '\n'))
