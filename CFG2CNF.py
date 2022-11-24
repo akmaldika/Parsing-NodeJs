@@ -158,4 +158,4 @@ def CFGtoCNF(path):
 
 if __name__ == "__main__":
     f = open("cnftest.txt", "w")
-    f.write(str(CFGtoCNF("grammar.txt")).replace(')', '\n'))
+    #f.write(str(CFGtoCNF("grammar2.txt")).replace(')', '\n'))

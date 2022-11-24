@@ -21,4 +21,4 @@ Ini multiline komen
 } else 
   asdasd5 = 8
   const car = {type:"Fiat", model:"500", color:"white"}
-  return car . type
+  return car[1]

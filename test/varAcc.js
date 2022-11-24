@@ -1,52 +1,55 @@
-y  = 3 * +5
+//y  = 3 * +5
 
-y = (3 * (2 + 3))
+//y = (3 * (2 + 3))
 
-if (x = 1){
-}
+// if (5){
+// i = 0
+// }
 
-i = 0
-while(i++){
-}
+//i = 0
+// while(i++){
+// }
 
-let A,B
-A = 1
-B = 2
+//let A,B
+//A = 1
+//B = 2
 
-arf625 = 1
+//arf625 = 1
 
-x++
-++x
+//x++
+//++x
 
-var x = 0
+//var x = 0
 
-argg = 2
+//argg = 2
 
-const car = {type:"Fiat", model:"500", color:"white"}
+//const Striiing = "213"
 
-agao = true
+//const car = {type:"Fiat", model:"500", color:"white"}
 
-abad + gsfgs
+//agao = true
 
-main = function berMain(ibu, ayah) {
-  return 1
-}
+//abad + gsfgs
+
+// main = function berMain(a = 5, ayah) {
+//   return 1
+// }
+//i = 10
+
+// for (f = 0; D = 1247129847; c = 12461289) {
+    // 
+// }
+
+// for (k;x;z) {
+//     // k = initial state 
+//     // x = condition 
+//     // z = kondisi setelah loop
+// }
+
+// while (true) {
+//    makan()
+// }
 
 
-for (let i = 0; i < 10; i++) {
-    console.log(i)
-}
-
-for (k;x;z) {
-    // k = initial state 
-    // x = condition 
-    // z = kondisi setelah loop
-}
-
-while (true) {
-    makan()
-}
-
-
-for (;;)
-    1
+// for (;;)
+//     1

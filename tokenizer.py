@@ -23,24 +23,24 @@ def splitOperators(testcase):
             output.append(member)
 
     #split buat operator
-    operator = ['!==', '===', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(',
-                 r'\)',r'\{', r'\}', r'\[', r'\]', '%', '--', '\\.', '\\++',
-                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';']
+    operator = ['!==', '===', '>=', '<=', ':', ',', '/', '\\.', '\\(',
+                 '\\)','\\{', '\\}', '\\[', '\\]', '%', '--', '\\.', '\\++',
+                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';', '\\?']
 
     for oper in operator:
         temp = []
         for statement in output:
-            elmt = re.split(r'[^\w]*(' + oper + r')[^\w]*', statement)
-            for splitted in elmt:
+            elmt = re.split(r'(' + oper + r')', statement)
+            for splitted in elmt:                
                 if splitted != '':
                     temp.append(splitted)
         output = temp
-        
+
     #split buat sama dengan yang dua dipisahin khusus
     temp = []
     for statement in output:
         if '==' in statement and not '===' in statement and not '!==' in statement:
-            elmt = re.split(r'[^\w]*(' + '==' + r')[^\w]*', statement)
+            elmt = re.split(r'(' + '==' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -52,7 +52,7 @@ def splitOperators(testcase):
     temp = []
     for statement in output:
         if '!=' in statement and not '==' in statement:
-            elmt = re.split(r'[^\w]*(' + '!=' + r')[^\w]*', statement)
+            elmt = re.split(r'(' + '!=' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -63,8 +63,68 @@ def splitOperators(testcase):
     #split buat sama dengan yang satu dipisahin khusus
     temp = []
     for statement in output:
-        if '=' in statement and not '==' in statement and not '!=' in statement:
-            elmt = re.split(r'[^\w]*(' + '=' + r')[^\w]*', statement)
+        if '=' in statement and not '==' in statement and not '!=' in statement and not '>=' in statement and not '<=' in statement:
+            elmt = re.split(r'(' + '=' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split lebih besar dipisahin khusus
+    temp = []
+    for statement in output:
+        if '>' in statement and not '>=' in statement:
+            elmt = re.split(r'(' + '\\>' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split lebih kecil dipisahin khusus
+    temp = []
+    for statement in output:
+        if '<' in statement and not '<=' in statement:
+            elmt = re.split(r'(' + '\\<' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split kali dipisahin khusus
+    temp = []
+    for statement in output:
+        if '*' in statement and not '**' in statement:
+            elmt = re.split(r'(' + '\\*' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split tambah dipisahin khusus
+    temp = []
+    for statement in output:
+        if '+' in statement and not '+' in statement:
+            elmt = re.split(r'(' + '\\*' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split kurang dipisahin khusus
+    temp = []
+    for statement in output:
+        if '-' in statement and not '-' in statement:
+            elmt = re.split(r'(' + '\\-' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -76,7 +136,7 @@ def splitOperators(testcase):
     temp = []
     for statement in output:
         if '|' in statement and not '||' in statement:
-            elmt = re.split(r'[A..z]*(' + '\\|' + r')[A..z]*', statement)
+            elmt = re.split(r'(' + '\\|' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -88,7 +148,7 @@ def splitOperators(testcase):
     temp = []
     for statement in output:
         if '&' in statement and not '&&' in statement:
-            elmt = re.split(r'[A..z]*(' + '\\&' + r')[A..z]*', statement)
+            elmt = re.split(r'(' + '\\&' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -102,14 +162,15 @@ def simplifyIdNNum(testcase):
     #ngubah identifier sama angka jadi a sama 1 doang
     global stateMachine
 
-    commands = ['=','!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-',
-                 '(', ')', '{', '}', '[', ']', '%', '--', '+', '*', '**',
-                 '\'', '\"', ';', '!==', '==='
-                 '.', '++','!', '^', '&', '&&' , '|', '||','function',
-                 'undefined', 'null', 'return','const', 'var', 'let', 'for',
-                 'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
-                 'finally', 'while', 'do', 'in', 'of', 'switch', 'case',
-                 'default', 'break', 'newline']
+    commands = ['+', '-', '*', '**', '/', '%', '<', '<=', '>', '>=', '==',
+                '&', '&&', '|', '||', '$', '.', '!', '(', ')', '{', '}', '[',
+                ']', ',', ';', ':', 'NaN', '=', '?', '===', '!==', '\"', '\'',
+                'function', '++', '--', 
+                'undefined', 'null', 'return','const', 'var', 'let', 'for',
+                'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
+                'finally', 'while', 'do', 'in', 'of', 'switch', 'case',
+                'default', 'break', 'continue', 'delete', 'newline']
+    
 
     output = []
     for statement in testcase:

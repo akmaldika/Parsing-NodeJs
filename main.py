@@ -6,8 +6,7 @@ import sys
 
 path = "declaretest.js"
 
-terminals, variables, productions = loadCFG("temp.txt")
-CNFdict = CFGtoCNF("temp.txt")
+CNFdict = CFGtoCNF("grammar2.txt")
 
 simplifiedInput, valid = tokenize(path)
 
