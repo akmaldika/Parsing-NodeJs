@@ -167,5 +167,5 @@ def CFGtoCNF(path):
 
 if __name__ == "__main__":
     terminals, variables, productions = loadCFG("temp.txt")
-    f = open("cnftest", "w")
+    f = open("cnftest.txt", "w")
     f.write(str(CFGtoCNF("temp.txt")))
