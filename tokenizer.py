@@ -1,7 +1,10 @@
+import re
 
-stateMachine = 1 #Kalo statemachine 0 berarti gak valid
-
-
+stateMachine = 1
+#stateMachine 0 = Reject
+#stateMachine 1 = Acc
+#statemachine 2 = lagi detek stopper beres masuk ke no 3
+#statemachine 3 = masuk ke detektor petik atau komen
 
 def readFile(filename):
     #baca file ke string
@@ -15,12 +18,12 @@ def removeComments(testcase):
     #return yang udah dihilangin komennya
     global stateMachine
 
+    #single line
     output = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
+    stateMachine = 3
+    while stateMachine > 1 and stateMachine < 4:
         try:
-            gaadaKomen = False
+            stateMachine = 2
             index = testcase.index("//")
             output += testcase[0:index]
             testcase = testcase[index:]
@@ -28,20 +31,20 @@ def removeComments(testcase):
                 index = testcase.index("\n")
                 testcase = testcase[index:]
             except:
-                adaKomen = False
+                pass
         except:
-            if gaadaKomen:
+            if stateMachine == 3:
                 output = testcase
             else:
                 output += testcase
-            adaKomen = False
+            stateMachine = 1
 
+    #multi line
     output2 = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
+    stateMachine = 3
+    while stateMachine > 1 and stateMachine < 4:
         try:
-            gaadaKomen = False
+            stateMachine = 2
             index = output.index("/*")
             output2 += output[0:index]
             output = output[index:]
@@ -49,15 +52,14 @@ def removeComments(testcase):
                 index = output.index("*/")
                 output = output[index+2:]
             except:
-                adaKomen = False
                 stateMachine = 0
                 break
         except:
-            if gaadaKomen:
+            if stateMachine == 3:
                 output2 = output
             else:
                 output2 += output
-            adaKomen = False
+            stateMachine = 1
 
     return output2
 
@@ -65,25 +67,23 @@ def removeStrings(testcase):
     #return semua string diganti jadi string kosong
     global stateMachine
 
+    #petik dua
     output = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
+    stateMachine = 3
+    while stateMachine > 1 and stateMachine < 4:
         try:
-            gaadaKomen = False
+            stateMachine = 2
             index = testcase.index("\"")
             output += testcase[0:index] + " \" "
             testcase = testcase[index+1:]
-            
             try:
-                valid = True
-                while valid:
+                stateMachine = 4
+                while stateMachine == 4:
                     index = testcase.index("\"")
                     try:
                         indexEnter = testcase.index("\n")
                         
                         if indexEnter < index:
-                            adaKomen = False
                             stateMachine = 0
                             break
                         
@@ -91,42 +91,41 @@ def removeStrings(testcase):
                         pass
 
                     if testcase[index-1] == "\\":
-                        valid = True
                         testcase = testcase[index+1:]
                     else:
-                        valid = False
+                        stateMachine = 2
 
                 testcase = testcase[index+1:]
                 output += " \" "
             except:
-                adaKomen = False
                 stateMachine = 0
+                break
+
         except:
-            if gaadaKomen:
+            if stateMachine == 3:
                 output = testcase
             else:
                 output += testcase
-            adaKomen = False
+            stateMachine = 1
 
+    #petik satu
     output2 = ""
-    adaKomen = True
-    gaadaKomen = True
-    while adaKomen:
+    stateMachine = 3
+    while stateMachine > 1 and stateMachine < 4:
         try:
-            gaadaKomen = False
+            stateMachine = 2
             index = output.index("'")
             output2 += output[0:index] + " ' "
             output = output[index+1:]
             
             try:
-                valid = True
-                while valid:
+                stateMachine = 4
+                while stateMachine == 4:
                     index = output.index("'")
                     try:
                         indexEnter = output.index("\n")
                         
                         if indexEnter < index:
-                            adaKomen = False
                             stateMachine = 0
                             break
                         
@@ -134,23 +133,23 @@ def removeStrings(testcase):
                         pass
 
                     if output[index-1] == "\\":
-                        valid = True
+                        stateMachine = 4
                         output = output[index+1:]
                     else:
-                        valid = False
+                        stateMachine = 2
 
                 output = output[index+1:]
                 output2 += " ' "
             except:
-                adaKomen = False
                 stateMachine = 0
+                break
         except:
-            if gaadaKomen:
+            if stateMachine == 3:
                 output2 = output
             else:
                 output2 += output
-            adaKomen = False
-
+            stateMachine = 1
+    
     return output2
 
 def transformEnters(testcase):
@@ -166,7 +165,35 @@ def splitOperators(testcase):
         if member != '':
             output.append(member)
 
+    #split buat operator
+    operator = ['!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(', r'\)', r'\{', r'\}', r'\[', r'\]', '#', '%', '--', '\\.', '\\++']
+
+    counter = 0
+    for oper in operator:
+        temp = []
+        for statement in output:
+            elmt = re.split(r'[A..z]*(' + oper + r')[A..z]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        output = temp
+    
+    #split buat sama dengan yang satu dipisahin khusus
+    temp = []
+    for statement in output:
+        counter += 1
+        if '=' in statement and not '==' in statement:
+            elmt = re.split(r'[A..z]*(' + '=' + r')[A..z]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+
+    output = temp
+
     return output
+
 
 if __name__ == "__main__":
     testcase = readFile("test.js")
