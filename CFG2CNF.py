@@ -153,6 +153,5 @@ def CFGtoCNF(path):
     return dictionary
 
 if __name__ == "__main__":
-    terminals, variables, productions = loadCFG("temp.txt")
     f = open("cnftest.txt", "w")
-    f.write(str(CFGtoCNF("temp.txt")).replace(')', '\n'))
+    f.write(str(CFGtoCNF("grammar.txt")).replace(')', '\n'))

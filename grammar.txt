@@ -1,7 +1,7 @@
-Terminals:~
-A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 + - * ** / % < <= > >= == & ^ && | ||~
-$ _ . ! ( ) { } \n [ ] , ; : ! /* */ // Nan = function undefined null return const var for true false if else " ' throw try catch finally~
-Productions:~
+Terminals:
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 + - * ** / % < <= > >= == & ^ && | ||
+$ _ . ! ( ) { } \n [ ] , ; : ! /* */ // Nan = function undefined null return const var for true false if else " ' throw try catch finally while do in of switch case default break continue ?
+Productions:
 STARTSYMBOL -> MAIN~
 ALPHABETS -> A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z | a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z~
 DIGIT -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9~
@@ -59,9 +59,9 @@ DELETETERM -> delete~
 CONTINUETERM -> continue~
 QUESTIONMARKTERM -> ?~
 VARIABLE -> CONST | VAR | LET~
-CONST -> CONSTTERM ASSIGMENT | CONSTTERM IDENTIFIER | CONSTTERM FUNCTION~
-VAR -> VARTERM ASSIGMENT | VARTERM IDENTIFIER | VARTERM FUNCTION~
-LET -> LETTERM ASSIGMENT | LETTERM IDENTIFIER | LETTERM FUNCTION~
+CONST -> CONSTTERM ASSIGMENT~
+VAR -> VARTERM ASSIGMENT | VARTERM IDENTIFIER~
+LET -> LETTERM ASSIGMENT | LETTERM IDENTIFIER~
 ESCAPESQUENCE -> BACKSLASH BACKSLASH | BACKSLASH PETIKSATU | BACKSLASH PETIKDUA~
 NEWLINE -> NEWLINE NEWLINE | NEWLINETERM~
 CREMENT -> IDENTIFIER PLUSPLUSTERM | PLUSPLUSTERM IDENTIFIER | IDENTIFIER MINUSMINUSTERM | MINUSMINUSTERM IDENTIFIER~
