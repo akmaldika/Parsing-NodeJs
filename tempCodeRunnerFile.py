@@ -1,1 +1,1 @@
-    print(CNFdict)
+    print("\n\ncheckpoint\n")

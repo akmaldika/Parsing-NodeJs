@@ -23,7 +23,7 @@ def splitOperators(testcase):
             output.append(member)
 
     #split buat operator
-    operator = ['!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(',
+    operator = ['!==', '===', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(',
                  r'\)',r'\{', r'\}', r'\[', r'\]', '%', '--', '\\.', '\\++',
                  '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';']
 
@@ -36,10 +36,34 @@ def splitOperators(testcase):
                     temp.append(splitted)
         output = temp
         
+    #split buat sama dengan yang dua dipisahin khusus
+    temp = []
+    for statement in output:
+        if '==' in statement and not '===' in statement and not '!==' in statement:
+            elmt = re.split(r'[^\w]*(' + '==' + r')[^\w]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split buat tidak sama dengan satu dipisahin khusus
+    temp = []
+    for statement in output:
+        if '!=' in statement and not '==' in statement:
+            elmt = re.split(r'[^\w]*(' + '!=' + r')[^\w]*', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
     #split buat sama dengan yang satu dipisahin khusus
     temp = []
     for statement in output:
-        if '=' in statement and not '==' in statement:
+        if '=' in statement and not '==' in statement and not '!=' in statement:
             elmt = re.split(r'[^\w]*(' + '=' + r')[^\w]*', statement)
             for splitted in elmt:
                 if splitted != '':
@@ -75,11 +99,12 @@ def splitOperators(testcase):
     return output
 
 def simplifyIdNNum(testcase):
+    #ngubah identifier sama angka jadi a sama 1 doang
     global stateMachine
 
     commands = ['=','!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-',
                  '(', ')', '{', '}', '[', ']', '%', '--', '+', '*', '**',
-                 '\'', '\"', ';',
+                 '\'', '\"', ';', '!==', '==='
                  '.', '++','!', '^', '&', '&&' , '|', '||','function',
                  'undefined', 'null', 'return','const', 'var', 'let', 'for',
                  'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
@@ -88,6 +113,7 @@ def simplifyIdNNum(testcase):
 
     output = []
     for statement in testcase:
+        #buat debugging pake print ini oke bet
         ###print("\n\nstatement :", statement)
         if statement in commands:
             output.append(statement)
@@ -105,15 +131,12 @@ def simplifyIdNNum(testcase):
 def tokenize(path):
     testcase = readFile(path)
     testcase = removeComments(testcase)
-
     if stateMachine == 1:
         testcase = removeStrings(testcase)
-
         if stateMachine == 1:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
             testcase = simplifyIdNNum(testcase)
-            
     if stateMachine != 0:
         return testcase, True
     else:
@@ -127,7 +150,7 @@ if __name__ == "__main__":
     if stateMachine == 1:
         testcase = removeStrings(testcase)
 
-        
+
         if stateMachine == 1:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
@@ -135,7 +158,7 @@ if __name__ == "__main__":
             print(testcase)
             
 
-    print("\n\ncheckpoint 2\n")
+    print("\n\ncheckpoint\n")
     
     if stateMachine != 0:
         print("sukses")
