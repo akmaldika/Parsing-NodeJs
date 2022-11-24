@@ -85,23 +85,11 @@ def prodToDict(productions):
     return dictionary
 
 
-def initDict(terminals, productions):
-    # I.S. Menerima array terminal, variabel, dan productions
-    # F.S. Mengembalikan dictionary dengan production yang sudah berbentuk satu terminal
-    dictionary = {}
-    for production in productions:
-        if len(production[1]) == 1 and production[1][0] in terminals:
-            dictionary[production[1][0]] = production[0]
-
-    return dictionary
-
 def CFGtoCNF(path):
     global newVars
     # ini fungsi utamanya
     terminals, variables, productions = loadCFG(path)
     additionalVar = newVars
-
-    dictionary = initDict(terminals, productions)
 
     newProd = []
     for production in productions:
@@ -137,7 +125,7 @@ def CFGtoCNF(path):
             newProd2.append(production)
         else:
             #branching > 2, ngurangin branching
-            newVar = newVars.pop(0)
+            newVar = additionalVar.pop(0)
             variables.append(newVar+'1')
             newProd2.append( (production[0], [production[1][0]]+[newVar+'1']) )
 
@@ -161,11 +149,10 @@ def CFGtoCNF(path):
                 done = False
                 break
     
-    return productions
-    
-    
+    dictionary = prodToDict(productions)
+    return dictionary
 
 if __name__ == "__main__":
     terminals, variables, productions = loadCFG("temp.txt")
     f = open("cnftest.txt", "w")
-    f.write(str(CFGtoCNF("temp.txt")))
+    f.write(str(CFGtoCNF("temp.txt")).replace(')', '\n'))

@@ -158,7 +158,7 @@ def identifierFirst(char):
         stateMachine = 5
     elif(ord(char) == 36): #dollarsign
         stateMachine = 5
-    else :
+    else:
         stateMachine = 0
 
 def identifierBody(char):
@@ -174,7 +174,7 @@ def identifierBody(char):
         stateMachine = 5
     elif(ord(char) >= 48 and ord(char) <= 57): #angka
         stateMachine = 5
-    else :
+    else:
         stateMachine = 0
 
 def identifier(string):
@@ -182,7 +182,6 @@ def identifier(string):
 
     stateMachine = 4
     for char in string:
-        print(char)
         if stateMachine == 4:
             identifierFirst(char)
         elif stateMachine == 5:
@@ -201,7 +200,7 @@ def numberBody(char):
 
     if(ord(char) >= 48 and ord(char) <= 57): #angka
         stateMachine = 6
-    else :
+    else:
         stateMachine = 0
 
 def number(string):

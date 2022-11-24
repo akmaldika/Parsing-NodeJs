@@ -25,23 +25,22 @@ def splitOperators(testcase):
     #split buat operator
     operator = ['!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-', r'\(',
                  r'\)',r'\{', r'\}', r'\[', r'\]', '%', '--', '\\.', '\\++',
-                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*']
+                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';']
 
-    counter = 0
     for oper in operator:
         temp = []
         for statement in output:
-            elmt = re.split(r'[A..z]*(' + oper + r')[A..z]*', statement)
+            elmt = re.split(r'[^\w]*(' + oper + r')[^\w]*', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
         output = temp
-    
+        
     #split buat sama dengan yang satu dipisahin khusus
     temp = []
     for statement in output:
         if '=' in statement and not '==' in statement:
-            elmt = re.split(r'[A..z]*(' + '=' + r')[A..z]*', statement)
+            elmt = re.split(r'[^\w]*(' + '=' + r')[^\w]*', statement)
             for splitted in elmt:
                 if splitted != '':
                     temp.append(splitted)
@@ -80,7 +79,7 @@ def simplifyIdNNum(testcase):
 
     commands = ['=','!=', '==', '>=', '<=', '<', '>', ':', ',', '/', '-',
                  '(', ')', '{', '}', '[', ']', '%', '--', '+', '*', '**',
-                 '\'', '\"',
+                 '\'', '\"', ';',
                  '.', '++','!', '^', '&', '&&' , '|', '||','function',
                  'undefined', 'null', 'return','const', 'var', 'let', 'for',
                  'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
@@ -89,9 +88,8 @@ def simplifyIdNNum(testcase):
 
     output = []
     for statement in testcase:
-        print("\n\nstatement :", statement)
+        ###print("\n\nstatement :", statement)
         if statement in commands:
-            print("yang masuk:", statement)
             output.append(statement)
         else:
             if number(statement):
@@ -103,6 +101,23 @@ def simplifyIdNNum(testcase):
                 break
     return output
 
+
+def tokenize(path):
+    testcase = readFile(path)
+    testcase = removeComments(testcase)
+
+    if stateMachine == 1:
+        testcase = removeStrings(testcase)
+
+        if stateMachine == 1:
+            testcase = transformEnters(testcase)
+            testcase = splitOperators(testcase)
+            testcase = simplifyIdNNum(testcase)
+            
+    if stateMachine != 0:
+        return testcase, True
+    else:
+        return testcase, False
 
 
 if __name__ == "__main__":
@@ -116,13 +131,12 @@ if __name__ == "__main__":
         if stateMachine == 1:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
-
-            print("state =", stateMachine)
             testcase = simplifyIdNNum(testcase)
+            print(testcase)
             
 
     print("\n\ncheckpoint 2\n")
-    print(testcase)
+    
     if stateMachine != 0:
         print("sukses")
     else:

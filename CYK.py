@@ -20,10 +20,10 @@ def checkCYK(testCase, CNFdict):
                 for rules in CNFdict.items():
                     for production in rules[1]:
                         if len(production) == 2:
-                            if (production[0] in CYKTable[i][start]) and (production[1] in CYKTable[start+1][width]):
+                            if (production[0] in CYKTable[i][start]) and (production[1] in CYKTable[start+1][j]):
                                 CYKTable[i][j].add(rules[0])
 
-    if "STARTSYMBOL" in CYKTable[0][inputLength-1]:
+    if 'STARTSYMBOL' in CYKTable[0][inputLength-1]:
         return True
     else:
         return False
