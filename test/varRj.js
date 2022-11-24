@@ -1,3 +1,8 @@
+y = 3 + *5
+
+const e = 1
+
+throw e
 
 
 try {
