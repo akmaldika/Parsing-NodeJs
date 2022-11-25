@@ -26,9 +26,6 @@ else :
 
             startTime = time.time()
             if valid:
-                # nanti jangan lupa dihapus
-                print("Tokenizing done!")
-                print(simplifiedInput)
                 #for k, v in CNFdict.items():
                 #    print(k, v)
                 if len(simplifiedInput) == 0:
@@ -42,7 +39,7 @@ else :
 
             finishTime = time.time() - startTime
             print("Relative length : ", len(simplifiedInput))
-            print(finishTime)
+            print("RunTime:",finishTime)
         else :
             print("File must be a javascript file")
     else :

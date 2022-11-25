@@ -106,7 +106,7 @@
 
 // afa 2 = 1
 
-var let = 1 // let boleh dijadikan identifier tapi gaboleh bound let let atau let var
+// var let = 1 // let boleh dijadikan identifier tapi gaboleh bound let let atau let var
 
 // (((i++)++)++)
 

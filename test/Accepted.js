@@ -74,9 +74,9 @@ if ((manJadda = Wajadda)){
 //   }
 
 //Ini belom tentu
-function g(arg) {
-    let arg = 'foo'
-  }
+// function g(arg) {
+//     let arg = 'foo'
+//   }
 
 // let hmm, y
 
@@ -130,7 +130,7 @@ function g(arg) {
 //     // harusnya bisa tapi kalo dari referensi disarankan untuk tambah bo bc
 //   }
 
-let faa = "Tom\ 's bar" // gabisa dan gabisa juga kalau enter lebih dari satu
+// let faa = "Tom\ 's bar"
 
 // var he = "Tom's bar"
 
@@ -174,9 +174,9 @@ let faa = "Tom\ 's bar" // gabisa dan gabisa juga kalau enter lebih dari satu
 //     1
 
 
-switch(x) {
+// switch(x) {
     
-}
+// }
 
 
 
