@@ -12,7 +12,7 @@
 <!-- Adreas Bara Timur -->
 ## General Information
 - The goal of this project is to create parsing for node js using grammar and parse algorithm.
-- This project using CFG (Context-Free Grammar) for grammar and using CYK (Cocke-Younger-Kasami) for parse algorithm.
+- This project is using CFG (Context-Free Grammar) for grammar and using CYK (Cocke-Younger-Kasami) for parse algorithm.
 - Students were asked to implement what they got in class by making their own code.
 
 ## Technologies Used
