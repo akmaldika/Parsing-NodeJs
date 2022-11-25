@@ -1,6 +1,6 @@
-// const longString = 'This is a very long string which needs
-//                     to wrap across multiple lines because
-//                     otherwise my code is unreadable.'
+const longString = 'This is a very long string which needs
+                    to wrap across multiple lines because
+                    otherwise my code is unreadable.'
 // harusnya gak di-acc
                     
 
