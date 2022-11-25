@@ -6,7 +6,7 @@
 * [Technologies Used](#Technologies-Used)
 * [Setup](#setup)
 * [Example Program Test](#Example-Program-Test)
-* [Acknowledgements](#acknowledgements)
+<!-- * [Acknowledgements](#acknowledgements) -->
 * [Contributors](#contributors)
 
 Adreas Bara Timur
