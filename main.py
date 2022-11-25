@@ -2,7 +2,6 @@ from src.CFG2CNF import *
 from src.CYK import *
 from src.simplifierFA import *
 from src.tokenizer import *
-import src.tokenizer
 import argparse
 import os
 import time
@@ -17,34 +16,34 @@ if (args.file == "N#AN#A") :
     exit(0)
 
 else :
-    if (os.path.isfile(args.file) and os.path.splitext(args.file)[1] == ".js" ) :
-        path = args.file
+    if (os.path.isfile(args.file)) : 
+        if (os.path.splitext(args.file)[1] == ".js" ) :
+            path = args.file
 
-        CNFdict = CFGtoCNF("./Grammar/CFG.txt")
+            CNFdict = CFGtoCNF("./Grammar/CFG.txt")
 
-        simplifiedInput, valid = tokenize(path)
+            simplifiedInput, valid = tokenize(path)
 
-        startTime = time.time()
-        if valid:
-            # nanti jangan lupa dihapus
-            print("Tokenizing done!")
-            print(simplifiedInput)
-            #for k, v in CNFdict.items():
-            #    print(k, v)
-            if len(simplifiedInput) == 0:
-                print("File accepted")
-            elif checkCYK(simplifiedInput, CNFdict):
-                print("File accepted")
+            startTime = time.time()
+            if valid:
+                # nanti jangan lupa dihapus
+                print("Tokenizing done!")
+                print(simplifiedInput)
+                #for k, v in CNFdict.items():
+                #    print(k, v)
+                if len(simplifiedInput) == 0:
+                    print("File accepted")
+                elif checkCYK(simplifiedInput, CNFdict):
+                    print("File accepted")
+                else:
+                    print("Syntax Error (CYK)")
             else:
-                print("Syntax Error (CYK)")
-        else:
-            print("Syntax Error (Token)")
+                print("Syntax Error (Token)")
 
-        finishTime = time.time() - startTime
-        print("Relative length : ", len(simplifiedInput))
-        print(finishTime)
-    else :
-        if (os.path.splitext(args.file)[1] != ".js") :
-            print("File must be a javascript file")
+            finishTime = time.time() - startTime
+            print("Relative length : ", len(simplifiedInput))
+            print(finishTime)
         else :
+            print("File must be a javascript file")
+    else :
             print("File not found")
