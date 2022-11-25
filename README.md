@@ -70,7 +70,7 @@ function foo(arg) {
 }
 ```
 
-output :
+- output :
 
 ```PowerShell
 Syntax Error (CYK)
