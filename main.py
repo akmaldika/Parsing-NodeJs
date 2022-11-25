@@ -4,7 +4,7 @@ from simplifierFA import *
 from tokenizer import *
 import sys
 
-path = "declaretest.js"
+path = "test.js"
 
 CNFdict = CFGtoCNF("grammar2.txt")
 
@@ -15,7 +15,9 @@ if valid:
     print(simplifiedInput)
     #for k, v in CNFdict.items():
     #    print(k, v)
-    if checkCYK(simplifiedInput, CNFdict):
+    if len(simplifiedInput) == 0:
+        print("File accepted")
+    elif checkCYK(simplifiedInput, CNFdict):
         print("File accepted")
     else:
         print("Syntax Error")

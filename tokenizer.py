@@ -1,6 +1,7 @@
 import re
 from simplifierFA import *
 
+
 def readFile(filename):
     #baca file ke string
     f = open(filename, "r")
@@ -25,7 +26,8 @@ def splitOperators(testcase):
     #split buat operator
     operator = ['!==', '===', '>=', '<=', ':', ',', '/', '\\.', '\\(',
                  '\\)','\\{', '\\}', '\\[', '\\]', '%', '--', '\\.', '\\++',
-                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';', '\\?']
+                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';', '\\?',
+                 '\\>\\>\\>', '\\<\\<']
 
     for oper in operator:
         temp = []
@@ -75,7 +77,19 @@ def splitOperators(testcase):
     #split lebih besar dipisahin khusus
     temp = []
     for statement in output:
-        if '>' in statement and not '>=' in statement:
+        if '>>' in statement and not '>>>' in statement:
+            elmt = re.split(r'(' + '\\>\\>' + r')', statement)
+            for splitted in elmt:
+                if splitted != '':
+                    temp.append(splitted)
+        else:
+            temp.append(statement)
+    output = temp
+
+    #split lebih besar dipisahin khusus
+    temp = []
+    for statement in output:
+        if '>' in statement and not '>=' in statement and not '>>' in statement:
             elmt = re.split(r'(' + '\\>' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
@@ -87,7 +101,7 @@ def splitOperators(testcase):
     #split lebih kecil dipisahin khusus
     temp = []
     for statement in output:
-        if '<' in statement and not '<=' in statement:
+        if '<' in statement and not '<=' in statement and not '<<' in statement:
             elmt = re.split(r'(' + '\\<' + r')', statement)
             for splitted in elmt:
                 if splitted != '':
@@ -165,7 +179,7 @@ def simplifyIdNNum(testcase):
     commands = ['+', '-', '*', '**', '/', '%', '<', '<=', '>', '>=', '==',
                 '&', '&&', '|', '||', '$', '.', '!', '(', ')', '{', '}', '[',
                 ']', ',', ';', ':', 'NaN', '=', '?', '===', '!==', '\"', '\'',
-                'function', '++', '--', 
+                'function', '++', '--', 'debugger', 'obj', '<<', '>>>', '>>'
                 'undefined', 'null', 'return','const', 'var', 'let', 'for',
                 'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
                 'finally', 'while', 'do', 'in', 'of', 'switch', 'case',
@@ -173,31 +187,34 @@ def simplifyIdNNum(testcase):
     
 
     output = []
+    stateMachine = 1
     for statement in testcase:
         #buat debugging pake print ini oke bet
         ###print("\n\nstatement :", statement)
         if statement in commands:
             output.append(statement)
         else:
-            if number(statement):
+            if number(statement)[0]:
+                stateMachine = number(statement)[1]
                 output.append('1')
-            elif identifier(statement):
+            elif identifier(statement)[0]:
+                stateMachine = identifier(statement)[1]
                 output.append('a')
             else:
                 stateMachine = 0
                 break
-    return output
+    return output, stateMachine
 
 
 def tokenize(path):
     testcase = readFile(path)
-    testcase = removeComments(testcase)
+    testcase, stateMachine = removeComments(testcase)
     if stateMachine == 1:
-        testcase = removeStrings(testcase)
+        testcase, stateMachine = removeStrings(testcase)
         if stateMachine == 1:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
-            testcase = simplifyIdNNum(testcase)
+            testcase, stateMachine = simplifyIdNNum(testcase)
     if stateMachine != 0:
         return testcase, True
     else:
@@ -206,13 +223,14 @@ def tokenize(path):
 
 if __name__ == "__main__":
     testcase = readFile("test.js")
-    testcase = removeComments(testcase)
+    testcase, stateMachine = removeComments(testcase)
 
     if stateMachine == 1:
-        testcase = removeStrings(testcase)
+    
+        testcase, stateMachine = removeStrings(testcase)
+        print(stateMachine)
 
-
-        if stateMachine == 1:
+        if stateMachine == 10000:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
             testcase = simplifyIdNNum(testcase)

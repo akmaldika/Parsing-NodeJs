@@ -1,3 +1,7 @@
+x = "\
+\
+"
+
 x=555||21|123&&12&70
 if (x == 0) {
   return 0 //ini komen
@@ -20,5 +24,5 @@ Ini multiline komen
   return 'Momin'
 } else 
   asdasd5 = 8
-  const car = {type:"Fiat", model:"500", color:"white"}
+  const car = {type:"Fiat \"", model:"500 \' '' ", color:"white"}
   return car[1]

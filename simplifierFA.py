@@ -1,4 +1,7 @@
-stateMachine = 1
+import re
+import traceback
+
+## stateMachine = 1
 
 ## General state
 #0: Reject
@@ -63,88 +66,141 @@ def removeComments(testcase):
                 output2 += output
             stateMachine = 1
 
-    return output2
+    return output2, stateMachine
+
 
 def removeStrings(testcase):
     #return semua string diganti jadi string kosong
     global stateMachine
-
-    #petik dua
-    output = ""
-    if stateMachine != 0:
-        stateMachine = 3
-    while stateMachine > 1 and stateMachine < 4:
-        try:
-            stateMachine = 2
-            index = testcase.index("\"")
-            output += testcase[0:index] + " \" "
-            testcase = testcase[index+1:]
-            try:
-                stateMachine = 4
-                while stateMachine == 4:
-                    index = testcase.index("\"")
-                    try:
-                        indexEnter = testcase.index("\n")
-                        if indexEnter < index:
-                            stateMachine = 0
-                            break
-                    except:
-                        pass
-                    if testcase[index-1] == "\\":
-                        testcase = testcase[index+1:]
-                    else:
-                        stateMachine = 2
-                testcase = testcase[index+1:]
-                output += " \" "
-            except:
-                stateMachine = 0
-                break
-        except:
-            if stateMachine == 3:
-                output = testcase
-            else:
-                output += testcase
-            stateMachine = 1
-
-    #petik satu
-    output2 = ""
-    if stateMachine != 0:
-        stateMachine = 3
-    while stateMachine > 1 and stateMachine < 4:
-        try:
-            stateMachine = 2
-            index = output.index("'")
-            output2 += output[0:index] + " ' "
-            output = output[index+1:]
-            try:
-                stateMachine = 4
-                while stateMachine == 4:
-                    index = output.index("'")
-                    try:
-                        indexEnter = output.index("\n")
-                        if indexEnter < index:
-                            stateMachine = 0
-                            break
-                    except:
-                        pass
-                    if output[index-1] == "\\":
-                        stateMachine = 4
-                        output = output[index+1:]
-                    else:
-                        stateMachine = 2
-                output = output[index+1:]
-                output2 += " ' "
-            except:
-                stateMachine = 0
-                break
-        except:
-            if stateMachine == 3:
-                output2 = output
-            else:
-                output2 += output
-            stateMachine = 1
     
-    return output2
+    elmt = re.split(r'(' + '\\\\"' + r')', testcase)
+    
+    output = []
+    for i in elmt:
+        if '"' in i and not '\\"' in i:
+            temp2 = re.split(r'(' + '"' + r')', i)
+            for j in temp2:
+                if j != '':
+                    output.append(j)
+        else:
+            if i != '':
+                output.append(i)
+
+    temp = []
+    for i in output:
+        if '\\\'' in i:
+            temp2 = re.split(r'(' + '\\\\\'' + r')', i)
+            for j in temp2:
+                if j != '':
+                    temp.append(j)
+        else:
+            if i != '':
+                temp.append(i)
+    output = temp
+
+    temp = []
+    for i in output:
+        if '\'' in i and not '\\\'' in i:
+            temp2 = re.split(r'(' + '\'' + r')', i)
+            for j in temp2:
+                if j != '':
+                    temp.append(j)
+        else:
+            if i != '':
+                temp.append(i)    
+    output = temp
+
+    temp = []
+    for i in output:
+        if '\'' in i and not '\\\'' in i:
+            temp2 = re.split(r'(' + '\'' + r')', i)
+            for j in temp2:
+                if j != '':
+                    temp.append(j)
+        else:
+            if i != '':
+                temp.append(i)    
+    output = temp
+
+    temp = []
+    for i in output:
+        j = i.replace('\n', 'NEWLINE')
+        temp.append(j)
+    output = temp
+
+    temp = []
+    for i in output:
+        if '\\NEWLINE' in i:
+            temp2 = re.split(r'(' + '\\\\NEWLINE' + r')', i)
+            for j in temp2:
+                if j != '':
+                    temp.append(j)
+        else:
+            if i != '':
+                temp.append(i)    
+    output = temp
+
+    temp = []
+    for i in output:
+        if 'NEWLINE' in i and not '\\NEWLINE' in i:
+            temp2 = re.split(r'(' + 'NEWLINE' + r')', i)
+            for j in temp2:
+                if j != '':
+                    temp.append(j)
+        else:
+            if i != '':
+                temp.append(i)    
+    output = temp
+
+    outputString = ''
+    idx = 0
+    while idx < len(output):
+        if output[idx] == '"':
+            outputString += output[idx]
+            if idx+1 < len(output):
+                idx += 1
+                while idx < len(output):
+                    if output[idx] == '"':
+                        outputString += ' ' + output[idx] + ' '
+                        idx += 1
+                        break
+                    elif idx == len(output)-1 or output[idx] == 'NEWLINE':
+                        stateMachine = 0
+                        idx = len(output)
+                        break
+                    else:
+                        idx += 1
+            else:
+                stateMachine = 0
+                break
+
+        elif output[idx] == '\'':
+            outputString += output[idx]
+            if idx+1 < len(output):
+                idx += 1
+                while idx < len(output):
+                    if output[idx] == '\'':
+                        outputString += ' ' + output[idx] + ' '
+                        idx += 1
+                        break
+                    elif idx == len(output)-1 or output[idx] == 'NEWLINE':
+                        stateMachine = 0
+                        idx = len(output)
+                        break
+                    else:
+                        idx += 1
+            else:
+                stateMachine = 0
+                break
+        else:
+            if output[idx] == 'NEWLINE':
+                outputString += '\n'
+            else:
+                outputString += output[idx]
+            idx += 1
+    
+    outputString += '\n'
+    return outputString, stateMachine
 
 ##Simplify identifier sama angka
 def identifierFirst(char):
@@ -160,6 +216,8 @@ def identifierFirst(char):
         stateMachine = 5
     else:
         stateMachine = 0
+
+    return stateMachine
 
 def identifierBody(char):
     global stateMachine
@@ -177,23 +235,25 @@ def identifierBody(char):
     else:
         stateMachine = 0
 
+    return stateMachine
+
 def identifier(string):
     global stateMachine
 
     stateMachine = 4
     for char in string:
         if stateMachine == 4:
-            identifierFirst(char)
+            stateMachine = identifierFirst(char)
         elif stateMachine == 5:
-            identifierBody(char)
+            stateMachine = identifierBody(char)
         elif stateMachine == 0:
             break
 
     if stateMachine != 0:
         stateMachine = 1
-        return True
+        return True, stateMachine
     else:
-        return False
+        return False, stateMachine
 
 def numberBody(char):
     global stateMachine
@@ -202,6 +262,8 @@ def numberBody(char):
         stateMachine = 6
     else:
         stateMachine = 0
+    
+    return stateMachine
 
 def number(string):
     global stateMachine
@@ -209,12 +271,13 @@ def number(string):
     stateMachine = 6
     for char in string:
         if stateMachine == 6:
-            numberBody(char)
+            stateMachine = numberBody(char)
         elif stateMachine == 0:
             break
         
     if stateMachine != 0:
         stateMachine = 1
-        return True
+        return True, stateMachine
     else:
-        return False
+        return False, stateMachine
+
