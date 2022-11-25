@@ -9,18 +9,18 @@
 <!-- * [Acknowledgements](#acknowledgements) -->
 * [Contributors](#contributors)
 
-Adreas Bara Timur
+<!-- Adreas Bara Timur -->
 ## General Information
 - The goal of this project is to create parsing for node js using grammar and parse algorithm.
 - This project using CFG (Context-Free Grammar) for grammar and using CYK (Cocke-Younger-Kasami) for parse algorithm.
 - Students were asked to implement what they got in class by making their own code.
 
 ## Technologies Used
-- Python 3.11.0
+- Python 3
 
 ## Setup
-### Prerequirement
-- [Python 3.11.0](https://www.python.org/downloads//)
+### Prerequisite
+- [Python 3](https://www.python.org/downloads//)
 ### Instalation
 1. Clone the repo
 
