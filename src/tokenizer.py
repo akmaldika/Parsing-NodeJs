@@ -36,7 +36,7 @@ def splitOperators(testcase):
             '\\+', '\\-', '\\*\\*', '\\*', '\\/', '\\%', '\\<', '\\>', '\\&\\&', '\\&', '\\|\\|', '\\|', '\\=']
 
     Op = ['>=', '<=', '===', '!==', '!=', '==', '>>>', '>>', '<<', '^', '\\!',
-         '**', '*', '/', '%', '<', '>', '&&', '&', '||', '|', '=']
+         '**', '*', '/', '%', '<', '>', '&&', '&', '||', '|']
 
     others = [':', ',','\\.', '\\(', '\\)','\\{', '\\}', '\\[', '\\]','--','\\+\\+', ';', '\\?']
 
@@ -63,6 +63,8 @@ def splitOperators(testcase):
                         temp.append(splitted)
         output = temp
 
+    print(output)
+
     #split & simplify operators
     for oper in OpSwap:
         temp = []
@@ -79,6 +81,8 @@ def splitOperators(testcase):
                 temp.append(statement)
 
         output = temp
+
+    print(output)
 
     return output
 
