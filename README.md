@@ -22,12 +22,12 @@ Adreas Bara Timur
 ### Prerequirement
 - [Python 3.11.0](https://www.python.org/downloads//)
 ### Instalation
-1. Make sure directory on terminal is in '..\Parsing-NodeJs\\' 
-2. Clone the repo
+1. Clone the repo
 
 ```PowerShell
 git clone https://github.com/akmaldika/Parsing-NodeJs.git
 ```
+2. Make sure directory on terminal is in '..\Parsing-NodeJs\\' 
 
 3. Run the program
 
