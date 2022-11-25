@@ -1,2 +1,0 @@
-print("Current:")
-    print(output)

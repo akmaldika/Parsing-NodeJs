@@ -1,31 +1,49 @@
-from CFG2CNF import *
-from CYK import *
-from simplifierFA import *
-from tokenizer import *
-import sys
+from src.CFG2CNF import *
+from src.CYK import *
+from src.simplifierFA import *
+from src.tokenizer import *
+import argparse
+import os
 import time
 
-path = "test.js"
+parser = argparse.ArgumentParser()
+parser.add_argument("file", nargs="?",  default="N#AN#A", type=str)
+args = parser.parse_args()
 
-CNFdict = CFGtoCNF("grammar2.txt")
+if (args.file == "N#AN#A") :
+    print("No file specified")
+    print("Usage: python main.py <path-of-file>")
+    exit(0)
 
-simplifiedInput, valid = tokenize(path)
+else :
+    if (os.path.isfile(args.file)) : 
+        if (os.path.splitext(args.file)[1] == ".js" ) :
+            path = args.file
 
-startTime = time.time()
-if valid:
-    print("Tokenizing done!")
-    print(simplifiedInput)
-    #for k, v in CNFdict.items():
-    #    print(k, v)
-    if len(simplifiedInput) == 0:
-        print("File accepted")
-    elif checkCYK(simplifiedInput, CNFdict):
-        print("File accepted")
-    else:
-        print("Syntax Error")
-else:
-    print("Tokenizing failure")
+            CNFdict = CFGtoCNF("./Grammar/CFG.txt")
 
-finishTime = time.time() - startTime
-print("Relative length : ", len(simplifiedInput))
-print(finishTime)
+            simplifiedInput, valid = tokenize(path)
+
+            startTime = time.time()
+            if valid:
+                # nanti jangan lupa dihapus
+                print("Tokenizing done!")
+                print(simplifiedInput)
+                #for k, v in CNFdict.items():
+                #    print(k, v)
+                if len(simplifiedInput) == 0:
+                    print("File accepted")
+                elif checkCYK(simplifiedInput, CNFdict):
+                    print("File accepted")
+                else:
+                    print("Syntax Error (CYK)")
+            else:
+                print("Syntax Error (Token)")
+
+            finishTime = time.time() - startTime
+            print("Relative length : ", len(simplifiedInput))
+            print(finishTime)
+        else :
+            print("File must be a javascript file")
+    else :
+            print("File not found")

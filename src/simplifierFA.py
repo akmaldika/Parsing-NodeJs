@@ -1,5 +1,7 @@
 import re
 
+
+
 ## stateMachine = 1
 # 0 : Reject
 # 1 : Acc
@@ -284,4 +286,3 @@ def number(string):
         return True, stateMachine
     else:
         return False, stateMachine
-
