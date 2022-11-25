@@ -63,7 +63,6 @@ def splitOperators(testcase):
                         temp.append(splitted)
         output = temp
 
-    print(output)
 
     #split & simplify operators
     for oper in OpSwap:
@@ -81,8 +80,6 @@ def splitOperators(testcase):
                 temp.append(statement)
 
         output = temp
-
-    print(output)
 
     return output
 
@@ -135,24 +132,3 @@ def tokenize(path):
     else:
         return testcase, False
 
-
-if __name__ == "__main__":
-    testcase = readFile("test.js")
-    testcase, stateMachine = removeComments(testcase)
-
-    if stateMachine == 1:
-    
-        testcase, stateMachine = removeStrings(testcase)
-
-        if stateMachine == 1:
-            testcase = transformEnters(testcase)
-            testcase = splitOperators(testcase)
-            testcase = simplifyIdNNum(testcase)
-            
-
-    print("\n\ncheckpoint\n")
-    
-    if stateMachine != 0:
-        print("sukses")
-    else:
-         print("gagal")
