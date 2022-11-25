@@ -17,7 +17,7 @@ if (args.file == "N#AN#A") :
     exit(0)
 
 else :
-    if (os.path.isfile(args.file)) :
+    if (os.path.isfile(args.file) and os.path.splitext(args.file)[1] == ".js" ) :
         path = args.file
 
         CNFdict = CFGtoCNF("./Grammar/CFG.txt")
@@ -44,4 +44,7 @@ else :
         print("Relative length : ", len(simplifiedInput))
         print(finishTime)
     else :
-        print("File not found")
+        if (os.path.splitext(args.file)[1] != ".js") :
+            print("File must be a javascript file")
+        else :
+            print("File not found")
