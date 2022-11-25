@@ -86,6 +86,8 @@ def prodToDict(productions):
 
 
 def CFGtoCNF(path):
+    # I.S. Menerima alamat file grammar yang telah dibuat
+    # F.S. Mengembalikan dictionary dari grammar yang telah dibuat dalam bentuk CNF
     global newVars
     # ini fungsi utamanya
     terminals, variables, productions = loadCFG(path)

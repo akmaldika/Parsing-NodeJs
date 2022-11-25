@@ -1,7 +1,7 @@
 #algoritma cyk
 def checkCYK(testCase, CNFdict):
-    #return true kalo STARTSYMBOL ada di paling atas
-    #return false kalo engga
+    # I.S. Menerima test case berupa array of token yang sudah disesuaikan dengan tokenizer
+    # F.S. Mengembalikan true jika bahasa valid, false jika tidak
 
     inputLength = len(testCase)
     CYKTable = [[set([]) for i in range(inputLength)] for j in range(inputLength)]
@@ -22,14 +22,6 @@ def checkCYK(testCase, CNFdict):
                         if len(production) == 2:
                             if (production[0] in CYKTable[i][start]) and (production[1] in CYKTable[start+1][j]):
                                 CYKTable[i][j].add(rules[0])
-    '''
-    counter = 1
-    for i in CYKTable:
-        print(counter)
-        for j in i:
-            print(j)
-        counter += 1
-    '''
     
     if 'SS' in CYKTable[0][inputLength-1]:
         return True

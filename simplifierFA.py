@@ -1,25 +1,18 @@
 import re
-import traceback
 
 ## stateMachine = 1
+# 0 : Reject
+# 1 : Acc
+# 2 : deteksi tutup petik atau komen
+# 3 : detektsi petik atau komen
+# 4 : deteksi huruf pertama identifier
+# 5 : deteksi identifier selain pertama
+# 6 : detektsi angka
 
-## General state
-#0: Reject
-#1 : Acc
-
-## State buat remove string/comment
-#2 : lagi detek stopper beres masuk ke no 3
-#3 : masuk ke detektor petik atau komen
-
-## State buat deteksi identifier
-#4 : huruf pertama identifier
-#5 : deteksi huruf selanjutnya
-
-## State buat deteksi numbers
-#6 : detektor angka
 
 def removeComments(testcase):
-    #return yang udah dihilangin komennya
+    # I.S. String yang diambil dari file
+    # F.S. Mengembalikan string yang diambil dari file dengan komen dihilangkan
     global stateMachine
 
     #single line
@@ -70,7 +63,8 @@ def removeComments(testcase):
 
 
 def removeStrings(testcase):
-    #return semua string diganti jadi string kosong
+    # I.S. String yang sudah dihilangkan komennya
+    # F.S. Mengembalikan string yang diambil dari file dengan isi string dihilangkan
     global stateMachine
     
     elmt = re.split(r'(' + '\\\\"' + r')', testcase)
@@ -204,6 +198,8 @@ def removeStrings(testcase):
 
 ##Simplify identifier sama angka
 def identifierFirst(char):
+    # I.S. Menerima karakter pertama dari sebuah identifier
+    # F.S. Mengganti stateMachine sesuai kondisi yang didapatkan
     global stateMachine
 
     if(ord(char) >= 65 and ord(char) <= 90): #huruf besar/underscore/dollarsign
@@ -220,6 +216,8 @@ def identifierFirst(char):
     return stateMachine
 
 def identifierBody(char):
+    # I.S. Menerima karakter selain pertama dari sebuah identifier
+    # F.S. Mengganti stateMachine sesuai kondisi yang didapatkan
     global stateMachine
 
     if(ord(char) >= 65 and ord(char) <= 90): #huruf besar/underscore/dollarsign
@@ -238,6 +236,8 @@ def identifierBody(char):
     return stateMachine
 
 def identifier(string):
+    # I.S. Menerima potongan string dan mendeteksi apakah string tersebut merupakan identifier
+    # F.S. Mengembalikan true jika stateMachine tidak masuk ke dead state (stateMachine != 0)
     global stateMachine
 
     stateMachine = 4
@@ -256,6 +256,8 @@ def identifier(string):
         return False, stateMachine
 
 def numberBody(char):
+    # I.S. Menerima karakter dari sebuah angka
+    # F.S. Mengganti stateMachine sesuai kondisi yang didapatkan
     global stateMachine
 
     if(ord(char) >= 48 and ord(char) <= 57): #angka
@@ -266,6 +268,8 @@ def numberBody(char):
     return stateMachine
 
 def number(string):
+    # I.S. Menerima potongan string dan mendeteksi apakah string tersebut merupakan angka
+    # F.S. Mengembalikan true jika stateMachine tidak masuk ke dead state (stateMachine != 0)
     global stateMachine
 
     stateMachine = 6

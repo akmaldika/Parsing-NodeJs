@@ -3,7 +3,8 @@ from simplifierFA import *
 
 
 def readFile(filename):
-    #baca file ke string
+    # I.S. Menerima alamat dari test file
+    # F.S. Mengembalikan string dari test file yang diterima
     f = open(filename, "r")
     testcase = f.read()
     f.close()
@@ -11,19 +12,19 @@ def readFile(filename):
     return testcase
 
 def transformEnters(testcase):
-    #ngubah enter jadi newline biar bisa dibaca sama parser
+    # I.S. Menerima string dari file
+    # F.S. Mengembalikan string dengan karakter 'pindah baris' diubah menjadi terminal yang terdapat pada grammar
     testcase = testcase.replace("\n", " newline ")
     return testcase
 
 def splitOperators(testcase):
-    #split tiap test case jadi ke bentuk array token
+    # I.S. Menerima string dari file
+    # F.S. Mengembalikan array token dengan membagi komponen command serta operator yang terdapat pada string menjadi komponen tersendiri
     output = []
     testcaseArr = testcase.split(" ")
     for member in testcaseArr:
         if member != '':
             output.append(member)
-
-    #split buat operator
 
     AssignSwap = ['\\+=', '\\-=', '\\*\\*=', '\\*=', '\\/=', '\\%=', '\\&\\&=', '\\&=', '\\^=', '\\|\\|='
                     ,'\\|=', '\\>\\>\\>=', '\\<\\<=', '\\>\\>=']
@@ -39,6 +40,7 @@ def splitOperators(testcase):
 
     others = [':', ',','\\.', '\\(', '\\)','\\{', '\\}', '\\[', '\\]','--','\\+\\+', ';', '\\?']
 
+    #split others
     for oper in others:
         temp = []
         for statement in output:
@@ -48,6 +50,7 @@ def splitOperators(testcase):
                     temp.append(splitted)
         output = temp
 
+    #split & simplify assign
     for oper in AssignSwap:
         temp = []
         for statement in output:
@@ -60,6 +63,7 @@ def splitOperators(testcase):
                         temp.append(splitted)
         output = temp
 
+    #split & simplify operators
     for oper in OpSwap:
         temp = []
         for statement in output:
@@ -79,7 +83,8 @@ def splitOperators(testcase):
     return output
 
 def simplifyIdNNum(testcase):
-    #ngubah identifier sama angka jadi a sama 1 doang
+    # I.S. Menerima array token yang sudah dibagi untuk tiap operator dan command
+    # F.S. Mengembalikan array token dengan angka dan identifier diubah menjadi terminal yang terdapat pada grammar
     global stateMachine
 
     commands = ['+', '-', '*', '$', '.', '(', ')', '{', '}', '[',
@@ -94,8 +99,6 @@ def simplifyIdNNum(testcase):
     output = []
     stateMachine = 1
     for statement in testcase:
-        #buat debugging pake print ini oke bet
-        ###print("\n\nstatement :", statement)
         if statement in commands:
             stateMachine = 1
             output.append(statement)
@@ -113,6 +116,8 @@ def simplifyIdNNum(testcase):
 
 
 def tokenize(path):
+    # I.S. Menerima alamat dari test file
+    # F.S. Mengembalikan array token dengan komponennya diubah menjadi terminal yang terdapat pada grammar
     testcase = readFile(path)
     testcase, stateMachine = removeComments(testcase)
     if stateMachine == 1:
