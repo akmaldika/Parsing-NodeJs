@@ -1,5 +1,5 @@
 import re
-from simplifierFA import *
+from src.simplifierFA import *
 
 
 def readFile(filename):

@@ -1,7 +1,8 @@
-from CFG2CNF import *
-from CYK import *
-from simplifierFA import *
-from tokenizer import *
+from src.CFG2CNF import *
+from src.CYK import *
+from src.simplifierFA import *
+from src.tokenizer import *
+import src.tokenizer
 import argparse
 import os
 import time
@@ -19,12 +20,13 @@ else :
     if (os.path.isfile(args.file)) :
         path = args.file
 
-        CNFdict = CFGtoCNF("grammar2.txt")
+        CNFdict = CFGtoCNF("./Grammar/CFG.txt")
 
         simplifiedInput, valid = tokenize(path)
 
         startTime = time.time()
         if valid:
+            # nanti jangan lupa dihapus
             print("Tokenizing done!")
             print(simplifiedInput)
             #for k, v in CNFdict.items():
@@ -34,9 +36,9 @@ else :
             elif checkCYK(simplifiedInput, CNFdict):
                 print("File accepted")
             else:
-                print("Syntax Error")
+                print("Syntax Error (CYK)")
         else:
-            print("Tokenizing failure")
+            print("Syntax Error (Token)")
 
         finishTime = time.time() - startTime
         print("Relative length : ", len(simplifiedInput))

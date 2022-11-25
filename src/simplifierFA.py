@@ -1,6 +1,8 @@
 import re
 import traceback
 
+
+
 ## stateMachine = 1
 
 ## General state
@@ -280,4 +282,3 @@ def number(string):
         return True, stateMachine
     else:
         return False, stateMachine
-
