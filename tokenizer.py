@@ -24,12 +24,22 @@ def splitOperators(testcase):
             output.append(member)
 
     #split buat operator
-    operator = ['!==', '===', '>=', '<=', ':', ',', '/', '\\.', '\\(',
-                 '\\)','\\{', '\\}', '\\[', '\\]', '%', '--', '\\.', '\\++',
-                 '\\!', '\\^', '\\&\\&' , '\\|\\|', '\\*\\*', ';', '\\?',
-                 '\\>\\>\\>', '\\<\\<']
 
-    for oper in operator:
+    AssignSwap = ['\\+=', '\\-=', '\\*\\*=', '\\*=', '\\/=', '\\%=', '\\&\\&=', '\\&=', '\\^=', '\\|\\|='
+                    ,'\\|=', '\\>\\>\\>=', '\\<\\<=', '\\>\\>=']
+
+    Assigner = ['+=', '-=', '**=', '*=', '/=', '%=', '&&=', '&=', '^=', '||='
+                    ,'|=', '>>>=', '<<=', '>>=']
+
+    OpSwap = ['\\>=', '\\<=', '===', '\\!==', '\\!=', '==', '\\>\\>\\>', '\\>\\>', '\\<\\<', '\\^', '\\!',
+            '\\+', '\\-', '\\*\\*', '\\*', '\\/', '\\%', '\\<', '\\>', '\\&\\&', '\\&', '\\|\\|', '\\|', '\\=']
+
+    Op = ['>=', '<=', '===', '!==', '!=', '==', '>>>', '>>', '<<', '^', '\\!',
+         '**', '*', '/', '%', '<', '>', '&&', '&', '||', '|', '=']
+
+    others = [':', ',','\\.', '\\(', '\\)','\\{', '\\}', '\\[', '\\]','--','\\+\\+', ';', '\\?']
+
+    for oper in others:
         temp = []
         for statement in output:
             elmt = re.split(r'(' + oper + r')', statement)
@@ -38,137 +48,33 @@ def splitOperators(testcase):
                     temp.append(splitted)
         output = temp
 
-    #split buat sama dengan yang dua dipisahin khusus
-    temp = []
-    for statement in output:
-        if '==' in statement and not '===' in statement and not '!==' in statement:
-            elmt = re.split(r'(' + '==' + r')', statement)
-            for splitted in elmt:
+    for oper in AssignSwap:
+        temp = []
+        for statement in output:
+            elmt = re.split(r'(' + oper + r')', statement)
+            for splitted in elmt:           
                 if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
+                    if splitted in Assigner:
+                        temp.append('=')
+                    else:
+                        temp.append(splitted)
+        output = temp
 
-    #split buat tidak sama dengan satu dipisahin khusus
-    temp = []
-    for statement in output:
-        if '!=' in statement and not '==' in statement:
-            elmt = re.split(r'(' + '!=' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
+    for oper in OpSwap:
+        temp = []
+        for statement in output:
+            if statement != '++' and statement != '--':
+                elmt = re.split(r'(' + oper + r')', statement)
+                for splitted in elmt:           
+                    if splitted != '':
+                        if splitted in Op:
+                            temp.append('*')
+                        else:
+                            temp.append(splitted)
+            else:
+                temp.append(statement)
 
-    #split buat sama dengan yang satu dipisahin khusus
-    temp = []
-    for statement in output:
-        if '=' in statement and not '==' in statement and not '!=' in statement and not '>=' in statement and not '<=' in statement:
-            elmt = re.split(r'(' + '=' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split lebih besar dipisahin khusus
-    temp = []
-    for statement in output:
-        if '>>' in statement and not '>>>' in statement:
-            elmt = re.split(r'(' + '\\>\\>' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split lebih besar dipisahin khusus
-    temp = []
-    for statement in output:
-        if '>' in statement and not '>=' in statement and not '>>' in statement:
-            elmt = re.split(r'(' + '\\>' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split lebih kecil dipisahin khusus
-    temp = []
-    for statement in output:
-        if '<' in statement and not '<=' in statement and not '<<' in statement:
-            elmt = re.split(r'(' + '\\<' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split kali dipisahin khusus
-    temp = []
-    for statement in output:
-        if '*' in statement and not '**' in statement:
-            elmt = re.split(r'(' + '\\*' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split tambah dipisahin khusus
-    temp = []
-    for statement in output:
-        if '+' in statement and not '+' in statement:
-            elmt = re.split(r'(' + '\\*' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split kurang dipisahin khusus
-    temp = []
-    for statement in output:
-        if '-' in statement and not '-' in statement:
-            elmt = re.split(r'(' + '\\-' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split or yang satu dipisahin khusus
-    temp = []
-    for statement in output:
-        if '|' in statement and not '||' in statement:
-            elmt = re.split(r'(' + '\\|' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)
-    output = temp
-
-    #split and yang satu dipisahin khusus
-    temp = []
-    for statement in output:
-        if '&' in statement and not '&&' in statement:
-            elmt = re.split(r'(' + '\\&' + r')', statement)
-            for splitted in elmt:
-                if splitted != '':
-                    temp.append(splitted)
-        else:
-            temp.append(statement)    
-    output = temp
+        output = temp
 
     return output
 
@@ -176,10 +82,9 @@ def simplifyIdNNum(testcase):
     #ngubah identifier sama angka jadi a sama 1 doang
     global stateMachine
 
-    commands = ['+', '-', '*', '**', '/', '%', '<', '<=', '>', '>=', '==',
-                '&', '&&', '|', '||', '$', '.', '!', '(', ')', '{', '}', '[',
-                ']', ',', ';', ':', 'NaN', '=', '?', '===', '!==', '\"', '\'',
-                'function', '++', '--', 'debugger', 'obj', '<<', '>>>', '>>'
+    commands = ['+', '-', '*', '$', '.', '(', ')', '{', '}', '[',
+                ']', ',', ';', ':', 'NaN', '=', '?', '\"', '\'',
+                'function', '++', '--', 'debugger', 'obj',
                 'undefined', 'null', 'return','const', 'var', 'let', 'for',
                 'true', 'false', 'if', 'else', 'throw', 'try', 'catch',
                 'finally', 'while', 'do', 'in', 'of', 'switch', 'case',
@@ -192,6 +97,7 @@ def simplifyIdNNum(testcase):
         #buat debugging pake print ini oke bet
         ###print("\n\nstatement :", statement)
         if statement in commands:
+            stateMachine = 1
             output.append(statement)
         else:
             if number(statement)[0]:
@@ -228,13 +134,11 @@ if __name__ == "__main__":
     if stateMachine == 1:
     
         testcase, stateMachine = removeStrings(testcase)
-        print(stateMachine)
 
-        if stateMachine == 10000:
+        if stateMachine == 1:
             testcase = transformEnters(testcase)
             testcase = splitOperators(testcase)
             testcase = simplifyIdNNum(testcase)
-            print(testcase)
             
 
     print("\n\ncheckpoint\n")
